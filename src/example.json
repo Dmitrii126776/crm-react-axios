@@ -1,0 +1,34 @@
+{
+  "service": {
+    "job": "Advertisement",
+    "employee": "Kim",
+    "price": 500,
+    "primeCost": 50,
+    "createAt": "01/10/2023"
+  },
+  "sentToDo": {
+    "date": "",
+    "status": false
+  },
+  "completed": {
+    "date": "",
+    "status": false
+  },
+  "sayToClient": {
+    "date": "",
+    "status": false
+  },
+  "clientReceived": {
+    "date": "",
+    "status": false
+  },
+  "paid": {
+    "payment": 200,
+    "debt": 300,
+    "primeCost": 50,
+    "date": "",
+    "status": false
+  },
+  "orderNumber": 12,
+  "clientName": "Rodney Sparrow"
+}

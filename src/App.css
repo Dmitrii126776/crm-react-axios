@@ -7,6 +7,18 @@
   pointer-events: none;
 }
 
+.list-group {
+  list-style-type: none; /* hides the bullet points */
+  counter-reset: list; /* resets the counter to 0 */
+}
+
+.list-group a::before {
+  counter-increment: list; /* increments the counter by 1 */
+  content: counter(list) ". "; /* displays the counter value before each "a" tag */
+  color: transparent; /* makes the counter value invisible */
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

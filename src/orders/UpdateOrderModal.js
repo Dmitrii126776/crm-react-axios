@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label} from 'reactstrap';
 import {createTodayDate} from "../support";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck} from "@fortawesome/free-solid-svg-icons";
 
 function UpdateOrderModal(props) {
     const {modal, order, toggle, updateExistOrder} = props
@@ -42,7 +44,6 @@ function UpdateOrderModal(props) {
     }
     const handleChangeClientReceived = (event) => {
         setCheckedClientReceived(event.target.checked)
-        setDateClientReceived(createTodayDate())
         setDateClientReceived(createTodayDate())
     }
     const saveUpdate = () => {
@@ -129,6 +130,9 @@ function UpdateOrderModal(props) {
                         <input onChange={handleChangeClientReceived}
                                className="form-check-input" type="checkbox" checked={checkedClientReceived}
                                id="flexCheckDefault"/>
+                    </div>
+                    <div>
+                        <a>Paid: {order.paid.status ? <FontAwesomeIcon icon={faCheck}/> : null}</a>
                     </div>
                     <div className="input-group mb-3">
                         <input value={debit}

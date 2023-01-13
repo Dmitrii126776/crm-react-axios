@@ -18,7 +18,7 @@ const OrderItem = (props) => {
 
     const [deleteModal, setDeleteModal] = useState(false);
     const deleteToggle = () => setDeleteModal(!deleteModal);
-    const [isPaid, setIsPaid] = useState(order.paid.status);
+
     return (
         <>
             <td><strong>{index + 1}</strong></td>
@@ -39,8 +39,6 @@ const OrderItem = (props) => {
                     <a>Job completed: {order.completed.status ? <FontAwesomeIcon icon={faCheck}/> : null}</a>
                     <a>Say to client: {order.sayToClient.status ? <FontAwesomeIcon icon={faCheck}/> : null}</a>
                     <a>Client received: {order.clientReceived.status ? <FontAwesomeIcon icon={faCheck}/> : null}</a>
-                </div>
-                <div>
                     <a>Paid: {order.paid.status ? <FontAwesomeIcon icon={faCheck}/> : null}</a>
                 </div>
             </td>
@@ -50,8 +48,6 @@ const OrderItem = (props) => {
                     <a>{order.completed.date} </a>
                     <a>{order.sayToClient.date} </a>
                     <a>{order.clientReceived.date}</a>
-                </div>
-                <div>
                     {order.paid.status ? <a>{order.paid.date}</a> : null}
                 </div>
             </td>

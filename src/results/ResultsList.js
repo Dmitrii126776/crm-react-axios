@@ -2,7 +2,6 @@ import React from 'react';
 
 const ResultsList = (props) => {
     const {orders} = props
-    const headers = ['QTY', 'Service', 'Employee', 'Income', 'Prime Cost', 'Net Profit', 'Client Debt', 'Paid sum']
 
     let services = orders.map(el => el.service.job)
     services = [...new Set(services)]
@@ -47,28 +46,75 @@ const ResultsList = (props) => {
     }
     console.log(results)
 
+    const resultConfig = [
+        {key: 'service', label: 'Service', render: (row) => <>{row.jobOrder}</>},
+        {key: 'qty', label: 'Qty', render: (row) => <>{row.totalCount}</>},
+        {key: 'employee', label: 'Employee', render: (row) => <>{row.employeeOrder}</>},
+        {key: 'price', label: 'Revenue', render: (row) => <>${row.totalPrice}</>},
+        {key: 'primeCost', label: 'Prime Cost', render: (row) => <>${row.totalPrimeCost}</>},
+        {key: 'profit', label: 'Net Profit', render: (row) => <>${row.totalPrice - row.totalPrimeCost}</>},
+        {key: 'debt', label: 'Client Debt', render: (row) => <>${row.totalDebt}</>},
+        {key: 'paid', label: 'Paid', render: (row) => <>${row.totalPayment}</>},
+    ]
+
     return (
         <div>
             <h2 style={{maxWidth: 500}}>Company Results</h2>
             <table className="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    {headers.map((el, i) => (<th key={i}>{el}</th>))}
+                    {resultConfig.map((el, i) => (<th key={i}>{el.label}</th>))}
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Translation</td>
-                    <td>Greg</td>
-                    <td>$100</td>
-                    <td>$25</td>
-                    <td>$75</td>
-                    <td>$70</td>
-                    <td>$30</td>
-                </tr>
-
+                {results.map(el => (<tr key={el.id}>
+                    {resultConfig.map((conf, i) => (<td key={i}>{conf.render(el)}</td>))}
+                </tr>))}
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        <strong>
+                            All Results
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            {results.reduce((sum, el) => el.totalCount + sum, 0)}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            Dream Team
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            ${results.reduce((sum, el) => el.totalPrice + sum, 0)}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            ${results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            ${results.reduce((sum, el) => el.totalPrice + sum, 0) - results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            ${results.reduce((sum, el) => el.totalDebt + sum, 0)}
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            ${results.reduce((sum, el) => el.totalPayment + sum, 0)}
+                        </strong>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
 
         </div>

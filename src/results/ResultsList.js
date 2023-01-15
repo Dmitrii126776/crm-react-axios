@@ -5,10 +5,10 @@ const ResultsList = (props) => {
 
     let services = orders.map(el => el.service.job)
     services = [...new Set(services)]
-    console.log(services)
     console.log(orders)
+    console.log(services)
     let results = []
-    let order = {}
+    let orderGroup = {}
     let debtOrder = 0;
     let paymentOrder = 0;
     let primeCostOrder = 0
@@ -22,13 +22,13 @@ const ResultsList = (props) => {
                 paymentOrder += orders[j].paid.payment
                 primeCostOrder += orders[j].service.primeCost
                 count++
-                order = {
+                orderGroup = {
                     jobOrder: orders[j].service.job,
                     employeeOrder: orders[j].service.employee,
                 }
             }
-            order = {
-                ...order,
+            orderGroup = {
+                ...orderGroup,
                 totalPrice: priceOrder,
                 totalPrimeCost: primeCostOrder,
                 totalDebt: debtOrder,
@@ -36,25 +36,43 @@ const ResultsList = (props) => {
                 totalCount: count
             }
         }
-        results.push(order)
+        results.push(orderGroup)
         debtOrder = 0;
         paymentOrder = 0;
         primeCostOrder = 0
         priceOrder = 0
         count = 0
-        order = {}
+        orderGroup = {}
     }
     console.log(results)
 
     const resultConfig = [
-        {key: 'service', label: 'Service', render: (row) => <>{row.jobOrder}</>},
-        {key: 'qty', label: 'Qty', render: (row) => <>{row.totalCount}</>},
-        {key: 'employee', label: 'Employee', render: (row) => <>{row.employeeOrder}</>},
-        {key: 'price', label: 'Revenue', render: (row) => <>${row.totalPrice}</>},
-        {key: 'primeCost', label: 'Prime Cost', render: (row) => <>${row.totalPrimeCost}</>},
-        {key: 'profit', label: 'Net Profit', render: (row) => <>${row.totalPrice - row.totalPrimeCost}</>},
-        {key: 'debt', label: 'Client Debt', render: (row) => <>${row.totalDebt}</>},
-        {key: 'paid', label: 'Paid', render: (row) => <>${row.totalPayment}</>},
+        {key: 'service', label: 'Service', render: (row) => <>{row.jobOrder}</>, footer: 'All Results'},
+        {
+            key: 'qty', label: 'Qty', render: (row) => <>{row.totalCount}</>,
+            footer: <>{results.reduce((sum, el) => el.totalCount + sum, 0)}</>
+        },
+        {key: 'employee', label: 'Employee', render: (row) => <>{row.employeeOrder}</>, footer: 'Dream Team'},
+        {
+            key: 'price', label: 'Revenue', render: (row) => <>${row.totalPrice}</>,
+            footer: <>${results.reduce((sum, el) => el.totalPrice + sum, 0)}</>
+        },
+        {
+            key: 'primeCost', label: 'Prime Cost', render: (row) => <>${row.totalPrimeCost}</>,
+            footer: <> ${results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}</>
+        },
+        {
+            key: 'profit', label: 'Net Profit', render: (row) => <>${row.totalPrice - row.totalPrimeCost}</>,
+            footer: <> ${results.reduce((sum, el) => el.totalPrice + sum, 0) - results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}</>
+        },
+        {
+            key: 'debt', label: 'Client Debt', render: (row) => <>${row.totalDebt}</>,
+            footer: <>${results.reduce((sum, el) => el.totalDebt + sum, 0)}</>
+        },
+        {
+            key: 'paid', label: 'Paid', render: (row) => <>${row.totalPayment}</>,
+            footer: <>${results.reduce((sum, el) => el.totalPayment + sum, 0)}</>
+        },
     ]
 
     return (
@@ -73,50 +91,10 @@ const ResultsList = (props) => {
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td>
-                        <strong>
-                            All Results
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            {results.reduce((sum, el) => el.totalCount + sum, 0)}
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            Dream Team
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            ${results.reduce((sum, el) => el.totalPrice + sum, 0)}
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            ${results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            ${results.reduce((sum, el) => el.totalPrice + sum, 0) - results.reduce((sum, el) => el.totalPrimeCost + sum, 0)}
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            ${results.reduce((sum, el) => el.totalDebt + sum, 0)}
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            ${results.reduce((sum, el) => el.totalPayment + sum, 0)}
-                        </strong>
-                    </td>
+                    {resultConfig.map((el, i) => (<td key={i}><strong>{el.footer}</strong></td>))}
                 </tr>
                 </tfoot>
             </table>
-
         </div>
     );
 };
